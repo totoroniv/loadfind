@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class KakaoApiResponseDto {
 
-    @JsonProperty("mets")
+    @JsonProperty("meta")
     private MetaDto metaDto;
 
     @JsonProperty("documents")

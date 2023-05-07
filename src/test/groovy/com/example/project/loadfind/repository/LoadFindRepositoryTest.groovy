@@ -10,6 +10,11 @@ class LoadFindRepositoryTest extends AbstractIntegrationContainerBaseTest {
     @Autowired
     private LoadFindRepository loadFindRepository
 
+    def setup() {
+
+        loadFindRepository.deleteAll()
+    }
+
     def "LoadFindRepository save"() {
         given:
         String address = "서울 특별시 성북구 종암동"
@@ -33,5 +38,32 @@ class LoadFindRepositoryTest extends AbstractIntegrationContainerBaseTest {
         result.getLoadName() == name
         result.getLatitude() == latitude
         result.getLongitude() == longitude
+    }
+
+
+    def "LoadFindRepository saveAll" () {
+
+        given:
+        String address = "서울 특별시 성북구 종암동"
+        String name = "은혜 약국"
+        double latitude = 36.11
+        double longitude = 128.11
+
+        def loadFind
+                = LoadFind.builder()
+                .loadAddress(address)
+                .loadName(name)
+                .latitude(latitude)
+                .longitude(longitude)
+                .build()
+
+        when:
+        loadFindRepository.saveAll (Arrays.asList(loadFind))
+        def result = loadFindRepository.findAll()
+
+        then:
+        println( "result.size() = " + result.size() )
+        result.size() == 1
+
     }
 }
