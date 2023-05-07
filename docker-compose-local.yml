@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  spring-docker-test-redis:
+    container_name: spring-docker-test-redis
+    build: ./redis
+    image: totoroniv/spring-docker-test-redis
+    ports:
+      - "6379:6379"
+  spring-docker-test-database:
+    container_name: spring-docker-test-database
+    build: ./database
+    image: totoroniv/spring-docker-test-database
+    environment:
+      - MARIADB_DATABASE=spring-docker-test
+      - MARIADB_ROOT_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+    ports:
+      - "3306:3306"
+
+
+

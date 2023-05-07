@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.6.7'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'groovy'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+bootJar {
+    archiveFileName = 'app.jar'
+}
+
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    testImplementation('org.spockframework:spock-core:2.1-groovy-3.0')
+    testImplementation('org.spockframework:spock-spring:2.1-groovy-3.0')
+
+    testImplementation('net.bytebuddy:byte-buddy:1.12.10')
+
+
+    // testcontainers
+    testImplementation 'org.testcontainers:spock:1.17.1'
+    testImplementation 'org.testcontainers:mariadb:1.17.1'
+
+
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
