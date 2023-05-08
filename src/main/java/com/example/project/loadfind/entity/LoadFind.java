@@ -1,6 +1,6 @@
 package com.example.project.loadfind.entity;
 
-
+import com.example.project.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import javax.persistence.Id;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoadFind {
+public class LoadFind extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +26,10 @@ public class LoadFind {
     private String loadAddress;
     private double latitude;
     private double longitude;
+
+
+    public void changeLoadFindAddress(String address) {
+        this.loadAddress = address;
+    }
 
 }
