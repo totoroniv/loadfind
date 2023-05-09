@@ -4,6 +4,8 @@ import com.example.project.AbstractIntegrationContainerBaseTest
 import com.example.project.loadfind.entity.LoadFind
 import org.springframework.beans.factory.annotation.Autowired
 
+import java.time.LocalDateTime
+
 
 class LoadFindRepositoryTest extends AbstractIntegrationContainerBaseTest {
 
@@ -66,4 +68,34 @@ class LoadFindRepositoryTest extends AbstractIntegrationContainerBaseTest {
         result.size() == 1
 
     }
+
+    def "BaseTimeEndtity 등록" () {
+        given:
+        LocalDateTime now = LocalDateTime.now()
+        String address = "서울 특별시 성북구 종암동"
+        String name = "은혜 약국"
+
+        def loadfind = LoadFind.builder()
+        .loadAddress(address)
+        .loadName(name)
+        .build()
+
+        when:
+
+        loadFindRepository.save(loadfind)
+        def result = loadFindRepository.findAll()
+
+
+        then:
+        println( "LocalDateTime                   = " + now.toString() )
+        println( "result.get(0).getCreateDate()   = " + result.get(0).getCreateDate().toString())
+        println( "result.get(0).getModifiedDate() = " + result.get(0).getModifiedDate().toString())
+
+        result.get(0).getCreateDate().isAfter(now)
+        result.get(0).getModifiedDate().isAfter(now)
+
+
+    }
+
+
 }
