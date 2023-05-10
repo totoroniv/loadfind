@@ -34,15 +34,23 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    //spork 테스트 관련 의존성
     testImplementation('org.spockframework:spock-core:2.1-groovy-3.0')
     testImplementation('org.spockframework:spock-spring:2.1-groovy-3.0')
-
     testImplementation('net.bytebuddy:byte-buddy:1.12.10')
 
 
-    // testcontainers
+    //testcontainers  test docker 관련 의존성
     testImplementation 'org.testcontainers:spock:1.17.1'
     testImplementation 'org.testcontainers:mariadb:1.17.1'
+
+    //spring retry 추가 의존성
+    implementation 'org.springframework.retry:spring-retry'
+
+    //mockWebServer
+    testImplementation("com.squareup.okhttp3:okhttp:4.10.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
+
 
 
 
