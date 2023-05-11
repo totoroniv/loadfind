@@ -1,11 +1,14 @@
 package com.example.project.direction.service;
 
 import com.example.project.api.dto.DocumentDto;
+import com.example.project.api.service.KakaoCategorySearchService;
 import com.example.project.direction.entity.Direction;
+import com.example.project.direction.repository.DirectionRepository;
 import com.example.project.loadfind.service.LoadFindSearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,6 +26,15 @@ public class DirectionService {
     private static final double RADIUS_KM = 10.0;   // 반경 10 km
 
     private final LoadFindSearchService loadFindSearchService;
+    private final DirectionRepository directionRepository;
+    private final KakaoCategorySearchService kakaoCategorySearchService;
+
+    public List<Direction> saveAll(List<Direction> directionList) {
+
+        if (CollectionUtils.isEmpty(directionList)) return Collections.emptyList();
+
+        return directionRepository.saveAll(directionList);
+    }
 
     public List<Direction> buildDirectionList(DocumentDto documentDto) {
 
@@ -47,10 +59,30 @@ public class DirectionService {
                 .sorted(Comparator.comparing(Direction::getDistance))
                 .limit(MAX_SEARCH_COUNT)
                 .collect(Collectors.toList());
-
-
     }
 
+    public List<Direction> buildDirectionListByCategoryApi(DocumentDto inputdocumentDto) {
+
+        if (Objects.isNull(inputdocumentDto)) return Collections.emptyList();
+
+        return kakaoCategorySearchService
+                .requestLoadFindCategorySearch(inputdocumentDto.getLatitude(), inputdocumentDto.getLongitude(), RADIUS_KM)
+                .getDocumentList()
+                .stream().map(resultDocumentDto ->
+                        Direction.builder()
+                                .inputAddress(inputdocumentDto.getAddressName())
+                                .inputLatitude(inputdocumentDto.getLatitude())
+                                .inputLongitude(inputdocumentDto.getLongitude())
+                                .targetLoadName(resultDocumentDto.getAddressName())
+                                .targetAddress(resultDocumentDto.getAddressName())
+                                .targetLatitude(resultDocumentDto.getLatitude())
+                                .targetLongitude(resultDocumentDto.getLongitude())
+                                .distance(resultDocumentDto.getDistance() * 0.001)
+                                .build())
+                .limit(MAX_SEARCH_COUNT)
+                .collect(Collectors.toList());
+
+    }
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         lat1 = Math.toRadians(lat1);
