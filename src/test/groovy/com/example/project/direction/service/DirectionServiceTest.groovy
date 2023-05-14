@@ -1,6 +1,8 @@
 package com.example.project.direction.service
 
 import com.example.project.api.dto.DocumentDto
+import com.example.project.api.service.KakaoCategorySearchService
+import com.example.project.direction.repository.DirectionRepository
 import com.example.project.loadfind.dto.LoadFindDto
 import com.example.project.loadfind.service.LoadFindSearchService
 import spock.lang.Specification
@@ -9,8 +11,13 @@ class DirectionServiceTest extends  Specification {
 
 
     private LoadFindSearchService loadFindSearchService = Mock()
+    private DirectionRepository directionRepository = Mock()
+    private KakaoCategorySearchService kakaoCategorySearchService = Mock()
+    private Base62Service base62Service = Mock()
 
-    private DirectionService directionService = new DirectionService(loadFindSearchService)
+
+    private DirectionService directionService = new DirectionService(
+            loadFindSearchService, directionRepository, kakaoCategorySearchService, base62Service)
 
     private  List<LoadFindDto> loadFindList
 

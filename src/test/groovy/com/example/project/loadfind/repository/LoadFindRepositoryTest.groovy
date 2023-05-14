@@ -69,29 +69,28 @@ class LoadFindRepositoryTest extends AbstractIntegrationContainerBaseTest {
 
     }
 
-    def "BaseTimeEndtity 등록" () {
+    def "BaseTimeEntity 등록" () {
         given:
-        LocalDateTime now = LocalDateTime.now()
+        def now = LocalDateTime.now()
         String address = "서울 특별시 성북구 종암동"
         String name = "은혜 약국"
+        double latitude = 36.11
+        double longitude = 128.11
 
-        def loadfind = LoadFind.builder()
-        .loadAddress(address)
-        .loadName(name)
-        .build()
+        def loadFind
+                = LoadFind.builder()
+                .loadAddress(address)
+                .loadName(name)
+                .latitude(latitude)
+                .longitude(longitude)
+                .build()
 
         when:
-
-        loadFindRepository.save(loadfind)
+        loadFindRepository.save(loadFind)
         def result = loadFindRepository.findAll()
 
-
         then:
-        println( "LocalDateTime                   = " + now.toString() )
-        println( "result.get(0).getCreateDate()   = " + result.get(0).getCreateDate().toString())
-        println( "result.get(0).getModifiedDate() = " + result.get(0).getModifiedDate().toString())
-
-        result.get(0).getCreateDate().isAfter(now)
+        result.get(0).getCreatedDate().isAfter(now)
         result.get(0).getModifiedDate().isAfter(now)
 
 

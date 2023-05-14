@@ -24,7 +24,7 @@ public class KakaoCategorySearchService {
 
     private static final String LOAD_FIND_CATEGORY = "PM9";
 
-    @Value("${KAKAO_REST_API_KEY}")
+    @Value("${kakao.rest.api.key}")
     private String kakaoRestApiKey;
 
     public KakaoApiResponseDto requestLoadFindCategorySearch(double latitude, double longitude, double radis) {

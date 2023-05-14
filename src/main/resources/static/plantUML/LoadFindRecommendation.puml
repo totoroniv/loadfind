@@ -10,7 +10,7 @@ database redis
 database database
 participant Kakao_Api
 
-title Pharmacy Recommendation System
+title LoadFind Recommendation System
 footer Page %page% of %lastpage%
 
 skinparam responseMessageBelowArrow true

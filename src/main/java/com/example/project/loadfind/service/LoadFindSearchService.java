@@ -1,5 +1,6 @@
 package com.example.project.loadfind.service;
 
+import com.example.project.loadfind.cache.LoadFindRedisTemplateService;
 import com.example.project.loadfind.dto.LoadFindDto;
 import com.example.project.loadfind.entity.LoadFind;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +17,16 @@ public class LoadFindSearchService {
 
     private final LoadFindRepositoryService loadFindRepositoryService;
 
+    private final LoadFindRedisTemplateService loadFindRedisTemplateService;
+
     public List<LoadFindDto> searchLoadFindDtoList() {
 
         //redis
-
+        List<LoadFindDto>  loadFindDtoList = loadFindRedisTemplateService.findAll();
+        if ( !loadFindDtoList.isEmpty()) {
+            log.info("redis findAll success");
+            return loadFindDtoList;
+        }
 
         //db
         return loadFindRepositoryService.findAll()

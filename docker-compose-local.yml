@@ -1,23 +1,22 @@
 version: "3.8"
 services:
   spring-docker-test-redis:
-    container_name: spring-docker-test-redis
+    container_name: load-find-recommendation-redis
     build: ./redis
-    image: totoroniv/spring-docker-test-redis
+    image: totoroniv/load-find-recommendation-redis
     ports:
       - "6379:6379"
   spring-docker-test-database:
-    container_name: spring-docker-test-database
+    container_name: load-find-recommendation-database
     build: ./database
-    image: totoroniv/spring-docker-test-database
+    image: totoroniv/load-find-recommendation-database
     environment:
-      - MARIADB_DATABASE=spring-docker-test
+      - MARIADB_DATABASE=load-find-recommendation
       - MARIADB_ROOT_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
     volumes:
       - ./database/config:/etc/mysql/conf.d
       - ./database/init/:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
-
 
 

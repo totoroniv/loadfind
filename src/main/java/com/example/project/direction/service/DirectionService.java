@@ -31,8 +31,14 @@ public class DirectionService {
     private final LoadFindSearchService loadFindSearchService;
     private final DirectionRepository directionRepository;
     private final KakaoCategorySearchService kakaoCategorySearchService;
-
     private final Base62Service base62Service;
+
+    @Transactional
+    public List<Direction> saveAll(List<Direction> directionList) {
+        if (CollectionUtils.isEmpty(directionList)) return Collections.emptyList();
+        return directionRepository.saveAll(directionList);
+    }
+
 
     @Transactional(readOnly = true)
     public String findDirectionUrlById(String encodedId) {
@@ -49,13 +55,6 @@ public class DirectionService {
     }
 
 
-    @Transactional
-    public List<Direction> saveAll(List<Direction> directionList) {
-
-        if (CollectionUtils.isEmpty(directionList)) return Collections.emptyList();
-
-        return directionRepository.saveAll(directionList);
-    }
 
     public List<Direction> buildDirectionList(DocumentDto documentDto) {
 
@@ -111,7 +110,7 @@ public class DirectionService {
         lat2 = Math.toRadians(lat2);
         lon2 = Math.toRadians(lon2);
 
-        double earthRadius = 6471;
+        double earthRadius = 6371;
         return earthRadius * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));
 
     }

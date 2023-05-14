@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  load-find-recommendation-redis:
+    container_name: load-find-recommendation-redis
+    build: ./redis
+    image: totoroniv/load-find-recommendation-redis
+    ports:
+      - "6379:6379"
+  load-find-recommendation-database:
+    container_name: load-find-recommendation-database
+    build: ./database
+    image: totoroniv/load-find-recommendation-database
+    environment:
+      - MARIADB_DATABASE=load-find-recommendation
+      - MARIADB_ROOT_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+    volumes:
+      - ./database/config:/etc/mysql/conf.d
+      - ./database/init/:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+  load-find-recommendation-app:
+    container_name: load-find-recommendation-app
+    build: .
+    depends_on:          # DB, REDIS 컨테이너가 실행된 다음 WEB을 실행시킨다.
+      - load-find-recommendation-database
+      - load-find-recommendation-redis
+    image: totoroniv/load-find-recommendation-app
+    environment:
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - KAKAO_REST_API_KEY=${KAKAO_REST_API_KEY}
+    ports:
+      - "80:8080"
+    restart: always # depends on은 실행 순서만 컨트롤 할뿐,
+    # 컨테이너 안의 서비스가 실행가능한 상태인지까지는 확인 하지 않기 때문에
+    # DB 또는 Redis가 아직 실행가능한 상태가 아니여서 실패하는 경우 재시작 하도록 설정
+
+

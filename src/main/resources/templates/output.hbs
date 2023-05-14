@@ -20,7 +20,7 @@
 </head>
 <body>
 <div>
-    <h2 class="h2-title">Pharmacy Recommendation Results</h2>
+    <h2 class="h2-title">Load Recommendation Results</h2>
 </div>
 
     <table class="table table-hover">
@@ -33,8 +33,8 @@
         </tr>
         {{#each outputFormList}}
         <tr>
-            <td>{{pharmacyName}}</td>
-            <td>{{pharmacyAddress}}</td>
+            <td>{{loadFindName}}</td>
+            <td>{{loadFindAddress}}</td>
             <td>{{distance}}</td>
             <td><a href="{{directionUrl}}">{{directionUrl}}</a></td>
             <td><a href="{{roadViewUrl}}">{{roadViewUrl}}</a></td>
